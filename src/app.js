@@ -32,7 +32,7 @@ app.post("/tweets", (req, res) => {
         return res.status(400).send("Todos os campos são obrigatórios!")
     }
 
-    const userExist = userData.find(data => data.username === username)
+    const userExist = userData.find(data => data.username === user)
 
     if (!userExist) {
         return res.status(401).send("UNAUTHORIZED")
@@ -40,7 +40,7 @@ app.post("/tweets", (req, res) => {
 
     userTweets.unshift({ tweet, user })
 
-    if (userTweets > 10) {
+    if (userTweets.length > 10) {
         userTweets.pop()
     }
 
