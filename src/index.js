@@ -7,17 +7,60 @@ app.use(express.json())
 
 const userData = []
 
+const userTweets = []
+
 app.post("/sign-up", (req, res) => {
 
     const body = req.body
 
+    if (!body.username || !body.avatar) {
+        return res.status(400).send("Todos os campos são obrigatórios!")
+    }
+
     userData.push(body)
 
-    console.log(userData)
-
-    res.send("Sucesso!")
+    res.status(201).send("OK")
 
 })
 
-const PORT = 4000
+app.post("/tweets", (req, res) => {
+
+    const tweet = req.body.tweet
+    const user = req.headers.username
+
+    if (!user || !tweet) {
+        return res.status(400).send("Todos os campos são obrigatórios!")
+    }
+
+    const userExist = userData.find(data => data.username === username)
+
+    if (!userExist) {
+        return res.status(401).send("UNAUTHORIZED")
+    }
+
+    userTweets.unshift({ tweet, user })
+
+    if (userTweets > 10) {
+        userTweets.pop()
+    }
+
+    res.status(201).send("OK")
+
+})
+
+app.get("/tweets", (req, res) => {
+
+    const sortedTweets = userTweets.map(tweet => {
+
+        const user = userData.find(item => item.username === tweet.username)
+        const list = { username: tweet.user, tweet: `${tweet.tweet}`, avatar: user.avatar}
+        return list
+
+    })
+
+    res.send(sortedTweets)
+
+})
+
+const PORT = 5000
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`) )
