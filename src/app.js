@@ -53,7 +53,7 @@ app.get("/tweets", (req, res) => {
     const sortedTweets = userTweets.map(tweet => {
 
         const user = userData.find(item => item.username === tweet.username)
-        const list = { username: tweet.user, tweet: `${tweet.tweet}`, avatar: user.avatar}
+        const list = { username: tweet.username, tweet: `${tweet.tweet}`, avatar: user.avatar}
         return list
 
     })
